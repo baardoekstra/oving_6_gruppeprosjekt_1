@@ -12,3 +12,5 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
 
 
 stasjon = list()
+
+x = 45
