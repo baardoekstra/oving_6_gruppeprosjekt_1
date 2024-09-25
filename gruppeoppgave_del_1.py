@@ -1,5 +1,4 @@
 import temperatur_trykk_met_samme_rune_time_datasett
+import trykk_og_temperaturlogg_rune_time
 
-for i in range(10):
-    Sug kuk.
-    
+stasjon = list()
