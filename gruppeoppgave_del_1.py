@@ -31,3 +31,6 @@ plt.xlabel("Tidspunkter")
 plt.ylabel("Verdier")
 
 plt.show()
+
+for i in range(len(tidspunkt2 - 1)):
+    
