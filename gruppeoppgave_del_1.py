@@ -24,6 +24,10 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     print(tidspunkt2)
     print(temperatur2)
 
-
+#Andreas
+#plt.plot(tidspunkt2[1:], temperatur2[1:], label="temperatur2[0]", color= "blue", linewidth=4)
+#plt.xlabel("Tidspunkter 2")
+#plt.ylabel("Temperaturer 2")
+#plt.show()
 
 
