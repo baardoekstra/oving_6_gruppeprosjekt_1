@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file1:
     reader1 = csv.reader(file1, delimiter=";")
