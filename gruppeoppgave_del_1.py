@@ -20,18 +20,13 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     for row2 in reader2:
         temperatur2.append(row2[-1])
         tidspunkt2.append(row2[0])
-        #print(
-    print(tidspunkt2)
-    print(temperatur2)
 
-#Andreas
-#plt.plot(tidspunkt2[1:], temperatur2[1:], label="temperatur2[0]", color= "blue", linewidth=4)
-#plt.xlabel("Tidspunkter 2")
-#plt.ylabel("Temperaturer 2")
-#plt.show()
 
 
 plt.figure(figsize=(12, 8))
 plt.plot(tidspunkt1[1:], temperatur1[1:], label=temperatur1[0], color="red", linewidth=4)
+plt.plot(tidspunkt2[1:], temperatur2[1:], label=temperatur2[0], color= "blue", linewidth=4)
+plt.xlabel("Tidspunkter")
+plt.ylabel("Verdier")
 
 plt.show()
