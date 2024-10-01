@@ -11,7 +11,7 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
         temperatur1.append(row[3])
         lufttrykk1.append(row[4])
 
-print(tidspunkt1, temperatur1, lufttrykk1)
+
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";") #Delimiter gir informasjon til programmet om at elementene skal "deles" ved hver semikolon.
@@ -24,6 +24,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     print(tidspunkt2)
     print(temperatur2)
 
+plt.figure(figsize=(12, 8))
+plt.plot(tidspunkt1[1:], temperatur1[1:], label=temperatur1[0], color="red", linewidth=4)
 
-
-
+plt.show()
