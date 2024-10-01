@@ -22,7 +22,8 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
         temperatur2.append(row2[-1])
         tidspunkt2.append(row2[0])
 
-
+for i in range(len(tidspunkt2 - 1)):
+    tidspunkt2[i] = datetime.strptime(tidspunkt2[i], '%m-%d-%Y').strftime('%d.%m.%Y')
 
 plt.figure(figsize=(12, 8))
 plt.plot(tidspunkt1[1:], temperatur1[1:], label=temperatur1[0], color="red", linewidth=4)
@@ -32,5 +33,5 @@ plt.ylabel("Verdier")
 
 plt.show()
 
-for i in range(len(tidspunkt2 - 1)):
-    
+
+
