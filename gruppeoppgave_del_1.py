@@ -1,5 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.dates as mdates
 from datetime import datetime
 
 
@@ -22,7 +24,7 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
 
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
-    reader2 = csv.reader(file2, delimiter=";") #Delimiter gir informasjon til programmet om at elementene skal "deles" ved hver semikolon.
+    reader2 = csv.reader(file2, delimiter=";")
     temperatur2_verdier = list()
     tidspunkt2_verdier = list()
     trykk_bar_verdier = list()
@@ -36,11 +38,10 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             tidspunkt2_verdier.append(row2[0])
             temperatur2_verdier.append(float(row2[-1].replace(',', '.')))
             trykk_abs_verdier.append(float(row2[3].replace(',', '.')))
+            trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
         except ValueError:
-            continue
-    for index, row3 in enumerate(reader2):
-        if index % 6 == 0 or index == 0:
-            trykk_bar_verdier.append(float(row3[2].replace(',', '.')))
+            trykk_bar_verdier.append(None)
+
     konverterte_tidspunkt2_liste = list()
     for element in tidspunkt2_verdier:
         try:
@@ -50,15 +51,38 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             konverterte_tidspunkt2 = datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
             konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
     konverterte_tidspunkt2_liste.sort()
+#print(len(tidspunkt1_verdier), len(temperatur1_verdier))
+#print(len(konverterte_tidspunkt2_liste), len(temperatur2_verdier))
+#print(len(konverterte_tidspunkt2_liste), len(trykk_abs_verdier))
+#print(len(konverterte_tidspunkt2_liste), len(trykk_bar_verdier))
+#print(len(tidspunkt1_verdier), len(lufttrykk1_verdier))
 print(trykk_bar_verdier)
 
-plt.figure(figsize=(12, 8))
-plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Temperatur1", color="red", linewidth=4)
-#plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk1", color= "blue", linewidth=4)
-plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur2", color= "orange", linewidth=4)
-#plt.plot(tidspunkt2_verdier, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=4)
-#plt.plot(tidspunkt2_verdier, trykk_bar_verdier, label="Trykk Barometer", color= "green", linewidth=4)
+tick_antall = 8
+tick_hopp = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
+tick_verdier = [konverterte_tidspunkt2_liste[i] for i in tick_hopp]
+
+plt.figure(figsize=(12, 12))
+plt.subplot(2, 2, 1)
+plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
+plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
-plt.ylabel("Verdier")
+plt.ylabel("Temperaturer")
+plt.xticks(tick_verdier)
+plt.legend()
+
+plt.subplot(2, 2, 2)
+plt.plot(konverterte_tidspunkt2_liste, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=2)
+plt.scatter(konverterte_tidspunkt2_liste, trykk_bar_verdier, label="Trykk Barometer", color= "green")
+plt.xlabel("Tidspunkter")
+plt.ylabel("Trykk")
+plt.xticks(tick_verdier)
+
+plt.subplot(2, 2, 3)
+plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk1", color= "blue", linewidth=2)
+plt.xlabel("Tidspunkter")
+plt.ylabel("Trykk")
+plt.xticks(tick_verdier)
+
 
 plt.show()
