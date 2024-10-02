@@ -12,12 +12,11 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
     tidspunkt1 = (header[2])
 
     for row in reader1:
-        try:
-            tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
-            temperatur1_verdier.append(float(row[3].replace(',', '.')))
-            lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
-        except ValueError:
-            continue
+        tidspunkt1_verdier.append(row[2])
+        temperatur1_verdier.append(float(row[3].replace(',', '.')))
+        lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
+    for element in tidspunkt1_verdier:
+        datetime.strptime(element, '%d.%m.%Y %H:%M')
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";") #Delimiter gir informasjon til programmet om at elementene skal "deles" ved hver semikolon.
@@ -37,11 +36,11 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
         if index % 6 == 0 or index == 0:
             trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
 
-for element in tidspunkt2_verdier:
-    try:
-        datetime.strptime(element, '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
-    except ValueError:
-        datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
+    for element in tidspunkt2_verdier:
+        try:
+            datetime.strptime(element, '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
+        except ValueError:
+            datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
 
 #for i in range(len(tidspunkt1_verdier)):
 #    try:
