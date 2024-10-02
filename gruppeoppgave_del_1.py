@@ -12,12 +12,10 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
     tidspunkt1 = (header[2])
 
     for row in reader1:
-        try:
-            tidspunkt1_verdier.append(row[2])
-            temperatur1_verdier.append(float(row[3].replace(',', '.')))
-            lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
-        except ValueError:
-            continue
+        tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
+        temperatur1_verdier.append(float(row[3].replace(',', '.')))
+        lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
+
 
 
 
@@ -32,25 +30,23 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     tidspunkt2 = (header2[0])
 
     for row2 in reader2:
-        try:
-            tidspunkt2_verdier.append(row2[0])
-            temperatur2_verdier.append(float(row2[-1].replace(',', '.')))
-            trykk_abs_verdier.append(float(row2[3].replace(',', '.')))
-            trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
-        except ValueError:
-            continue
+        tidspunkt2_verdier.append(datetime.strptime(row2[0], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M'))
+        temperatur2_verdier.append(float(row2[-1].replace(',', '.')))
+        trykk_abs_verdier.append(float(row2[3].replace(',', '.')))
+        trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
 
 
-for i in range(len(tidspunkt1_verdier)):
-    try:
-        tidspunkt1_verdier[i] = datetime.strptime(tidspunkt1_verdier[i], '%d.%m.%Y %H:%M')
-    except ValueError:
-        continue
-for i in range(len(tidspunkt2_verdier)):
-    try:
-        tidspunkt2_verdier[i] = datetime.strptime(tidspunkt2_verdier[i], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
-    except:
-        continue
+
+#for i in range(len(tidspunkt1_verdier)):
+#    try:
+#        tidspunkt1_verdier[i] = datetime.strptime(tidspunkt1_verdier[i], '%d.%m.%Y %H:%M')
+#    except ValueError:
+#        continue
+#for i in range(len(tidspunkt2_verdier)):
+#    try:
+#        tidspunkt2_verdier[i] = datetime.strptime(tidspunkt2_verdier[i], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
+#    except:
+#        continue
 
 plt.figure(figsize=(12, 8))
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Temperatur1", color="red", linewidth=4)
