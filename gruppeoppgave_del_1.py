@@ -30,15 +30,18 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     tidspunkt2 = (header2[0])
 
     for row2 in reader2:
-        try:
-            tidspunkt2_verdier.append(datetime.strptime(row2[0], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M'))
-        except ValueError:
-            tidspunkt2_verdier.append(datetime.strptime(row2[0], '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M'))
+        tidspunkt2_verdier.append(row2[0])
         temperatur2_verdier.append(float(row2[-1].replace(',', '.')))
         trykk_abs_verdier.append(float(row2[3].replace(',', '.')))
-        trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
+    for index, row3 in enumerate(reader2):
+        if index % 6 == 0 or index == 0:
+            trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
 
-
+for element in tidspunkt2_verdier:
+    try:
+        datetime.strptime(element, '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
+    except ValueError:
+        datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
 
 #for i in range(len(tidspunkt1_verdier)):
 #    try:
