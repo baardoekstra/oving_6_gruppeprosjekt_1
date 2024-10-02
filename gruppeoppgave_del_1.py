@@ -58,7 +58,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
 #print(len(tidspunkt1_verdier), len(lufttrykk1_verdier))
 print(trykk_bar_verdier)
 
-tick_antall = 8
+tick_antall = 3
 tick_hopp = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
 tick_verdier = [konverterte_tidspunkt2_liste[i] for i in tick_hopp]
 
@@ -83,6 +83,5 @@ plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk1", color= "blu
 plt.xlabel("Tidspunkter")
 plt.ylabel("Trykk")
 plt.xticks(tick_verdier)
-
 
 plt.show()
