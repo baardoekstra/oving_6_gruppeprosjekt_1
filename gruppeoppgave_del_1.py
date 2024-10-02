@@ -40,7 +40,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             continue
     for index, row3 in enumerate(reader2):
         if index % 6 == 0 or index == 0:
-            trykk_bar_verdier.append(float(row2[2].replace(',', '.')))
+            trykk_bar_verdier.append(float(row3[2].replace(',', '.')))
     konverterte_tidspunkt2_liste = list()
     for element in tidspunkt2_verdier:
         try:
@@ -50,6 +50,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             konverterte_tidspunkt2 = datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
             konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
     konverterte_tidspunkt2_liste.sort()
+print(trykk_bar_verdier)
 
 plt.figure(figsize=(12, 8))
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Temperatur1", color="red", linewidth=4)
