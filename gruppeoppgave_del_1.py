@@ -42,16 +42,6 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
         except ValueError:
             datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
 
-#for i in range(len(tidspunkt1_verdier)):
-#    try:
-#        tidspunkt1_verdier[i] = datetime.strptime(tidspunkt1_verdier[i], '%d.%m.%Y %H:%M')
-#    except ValueError:
-#        continue
-#for i in range(len(tidspunkt2_verdier)):
-#    try:
-#        tidspunkt2_verdier[i] = datetime.strptime(tidspunkt2_verdier[i], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
-#    except:
-#        continue
 
 plt.figure(figsize=(12, 8))
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Temperatur1", color="red", linewidth=4)
