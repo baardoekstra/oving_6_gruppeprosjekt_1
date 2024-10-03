@@ -62,6 +62,20 @@ tick_antall = 3
 tick_hopp = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
 tick_verdier = [konverterte_tidspunkt2_liste[i] for i in tick_hopp]
 
+# Funksjon for å regne gjennomsnitt av temperaturer
+snitt_temperaturer = 0
+
+def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
+    for i in range(n, len(tidspunkt1_verdier) - n):
+        snitt = np.mean(temperatur2_verdier[i - n : i + n + 1]) #beregner snittet av de n-forrige, den nåværende og de n neste målingene.
+        tidspunkt1_verdier.append(tidspunkt1_verdier[i])
+        snitt_temperaturer.append(snitt)
+    return tidspunkt1_verdier, snitt_temperaturer
+snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
+
+        
+
+
 plt.figure(figsize=(12, 12))
 plt.subplot(2, 2, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
