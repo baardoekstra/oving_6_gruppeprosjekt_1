@@ -1,0 +1,13 @@
+# List of values as strings with misplaced punctuations
+values = ['100.00', '200.50', '300.75']
+
+# Adjust the position of the punctuation for each value
+adjusted_values = []
+for value in values:
+    # Split the value on the punctuation
+    if '.' in value:
+        parts = value.split('.')
+        adjusted_value = parts[0] + parts[1][0] + '.' + parts[1][1:]
+        adjusted_values.append(adjusted_value)
+
+print(adjusted_values)
