@@ -90,7 +90,7 @@ def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
         tidspunkt1_verdier.append(tidspunkt1_verdier[i])
         snitt_temperaturer.append(snitt)
     return tidspunkt1_verdier, snitt_temperaturer
-snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
+#snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
 
         
 
@@ -98,7 +98,7 @@ snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
 plt.figure(figsize=(12, 12))
 plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
-plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+plt.scatter(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
 plt.xticks(tick_verdier)
