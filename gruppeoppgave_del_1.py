@@ -82,10 +82,15 @@ samlede_tidspunkt.sort()
 #print(len(tidspunkt1_verdier), len(lufttrykk1_verdier))
 #print(tidspunkt1_verdier, "SKILLE", lufttrykk1_verdier)
 
-tick_antall = 3
-tick_hopp = np.linspace(0, len(samlede_tidspunkt) -1, tick_antall, dtype=int)
-tick_verdier = [samlede_tidspunkt[i] for i in tick_hopp]
-print(tick_verdier)
+tick_antall = 8
+tick_hopp1 = np.linspace(0, len(tidspunkt1_verdier) -1, tick_antall, dtype=int)
+tick_verdier1 = [tidspunkt1_verdier[i] for i in tick_hopp1]
+
+tick_hopp2 = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
+tick_verdier2 = [konverterte_tidspunkt2_liste[i] for i in tick_hopp2]
+print(tick_verdier1)
+print(tick_verdier2)
+
 # Funksjon for å regne gjennomsnitt av temperaturer
 #def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
 #tidspunkt1_verdier_gj = list()
@@ -101,34 +106,44 @@ for i in range(len(tidspunkt1_verdier)):
     snitt_temperaturer.append(snitt)
 #return tidspunkt1_verdier, snitt_temperaturer
 #snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
-#print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)))
+#print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)
 
 plt.figure(figsize=(12, 10))
 plt.subplot(2, 2, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
-plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
-#plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="green", linewidth=2)
-plt.scatter(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="orange", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
-plt.xticks(tick_verdier)
-plt.gcf().autofmt_xdate(rotation=45)
+plt.xticks(tick_verdier1)
+plt.gcf().autofmt_xdate(rotation=90)
+plt.grid()
 plt.legend()
 
 plt.subplot(2, 2, 2)
+plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+plt.xlabel("Tidspunkter")
+plt.ylabel("Temperaturer")
+plt.xticks(tick_verdier2)
+plt.gcf().autofmt_xdate(rotation=90)
+plt.grid()
+plt.legend()
+
+plt.subplot(2, 2, 4)
 plt.plot(konverterte_tidspunkt2_liste, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=2)
 plt.scatter(konverterte_tidspunkt2_liste, trykk_bar_verdier, label="Trykk Barometer", color= "green")
-plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Trykk i hPa")
-plt.xticks(tick_verdier)
-plt.gcf().autofmt_xdate(rotation=45)
+plt.xticks(tick_verdier2)
+plt.grid()
+plt.gcf().autofmt_xdate(rotation=90)
+plt.legend()
 
 plt.subplot(2, 2, 3)
 plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Lufttrykki hPa")
-plt.xticks(tick_verdier)
-plt.gcf().autofmt_xdate(rotation=45)
+plt.xticks(tick_verdier1)
+plt.grid()
+plt.gcf().autofmt_xdate(rotation=90)
 
 plt.show()
