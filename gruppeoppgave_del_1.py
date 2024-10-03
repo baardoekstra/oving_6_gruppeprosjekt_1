@@ -82,23 +82,28 @@ tick_hopp = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dt
 tick_verdier = [konverterte_tidspunkt2_liste[i] for i in tick_hopp]
 
 # Funksjon for å regne gjennomsnitt av temperaturer
-snitt_temperaturer = 0
+#def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
+#tidspunkt1_verdier_gj = list()
+#temperatur1_verdier_gj = list()
+snitt_temperaturer = list()
+n = 30
 
-def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
-    for i in range(n, len(tidspunkt1_verdier) - n):
-        snitt = np.mean(temperatur2_verdier[i - n : i + n + 1]) #beregner snittet av de n-forrige, den nåværende og de n neste målingene.
-        tidspunkt1_verdier.append(tidspunkt1_verdier[i])
-        snitt_temperaturer.append(snitt)
-    return tidspunkt1_verdier, snitt_temperaturer
-snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
-
-        
+for i in range(len(tidspunkt1_verdier)):
+    #tidspunkt1_verdier.append(i[2])
+    #temperatur1_verdier.append(float(i[-2]))
+    snitt = np.mean(temperatur1_verdier[i]) # : i + n + 1]) #beregner snittet av de n-forrige, den nåværende og de n neste målingene.
+    #tidspunkt1_verdier.append(tidspunkt1_verdier[i])
+    snitt_temperaturer.append(snitt)
+#return tidspunkt1_verdier, snitt_temperaturer
+#snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
+#print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)))
 
 
 plt.figure(figsize=(12, 12))
 plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
 plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+#plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="green", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
 plt.xticks(tick_verdier)
