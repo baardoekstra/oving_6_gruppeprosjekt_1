@@ -14,13 +14,9 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
     tidspunkt1 = (header[2])
 
     for row in reader1:
-        tidspunkt1_verdier.append(row[2])
+        tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
         temperatur1_verdier.append(float(row[3].replace(',', '.')))
         lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
-    for element in tidspunkt1_verdier:
-        datetime.strptime(element, '%d.%m.%Y %H:%M')
-        
-
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
@@ -72,7 +68,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     konverterte_tidspunkt2_liste.sort()
 
 samlede_tidspunkt = tidspunkt1_verdier + konverterte_tidspunkt2_liste
-samlede_tidspunkt.sort()
+#samlede_tidspunkt.sort()
 #print(samlede_tidspunkt, len(samlede_tidspunkt))
 #print(samlede_tidspunkt[0], samlede_tidspunkt[-1])
 #print(len(tidspunkt1_verdier), len(temperatur1_verdier))
@@ -88,8 +84,6 @@ tick_verdier1 = [tidspunkt1_verdier[i] for i in tick_hopp1]
 
 tick_hopp2 = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
 tick_verdier2 = [konverterte_tidspunkt2_liste[i] for i in tick_hopp2]
-print(tick_verdier1)
-print(tick_verdier2)
 
 # Funksjon for å regne gjennomsnitt av temperaturer
 #def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
@@ -108,10 +102,18 @@ for i in range(len(tidspunkt1_verdier)):
 #snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
 #print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)
 
+plt.figure()
+print(tidspunkt1_verdier)
+plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
+#plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+plt.show()
+print(konverterte_tidspunkt2_liste[1])
+
 plt.figure(figsize=(16, 9))
-plt.subplot(2, 2, 1)
+plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
 plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="orange", linewidth=2)
+plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
 plt.xticks(tick_verdier1)
@@ -119,18 +121,19 @@ plt.gcf().autofmt_xdate(rotation=90)
 plt.grid()
 plt.legend()
 
-plt.subplot(2, 2, 2)
-plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
-plt.xlabel("Tidspunkter")
-plt.ylabel("Temperaturer")
-plt.xticks(tick_verdier2)
-plt.gcf().autofmt_xdate(rotation=90)
-plt.grid()
-plt.legend()
+#plt.subplot(2, 2, 2)
+#plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+#plt.xlabel("Tidspunkter")
+#plt.ylabel("Temperaturer")
+#plt.xticks(tick_verdier2)
+#plt.gcf().autofmt_xdate(rotation=90)
+#plt.grid()
+#plt.legend()
 
-plt.subplot(2, 2, 4)
+plt.subplot(2, 1, 2)
 plt.plot(konverterte_tidspunkt2_liste, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=2)
 plt.scatter(konverterte_tidspunkt2_liste, trykk_bar_verdier, label="Trykk Barometer", color= "green")
+plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Trykk i hPa")
 plt.xticks(tick_verdier2)
@@ -138,12 +141,12 @@ plt.grid()
 plt.gcf().autofmt_xdate(rotation=90)
 plt.legend()
 
-plt.subplot(2, 2, 3)
-plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
-plt.xlabel("Tidspunkter")
-plt.ylabel("Lufttrykki hPa")
-plt.xticks(tick_verdier1)
-plt.grid()
-plt.gcf().autofmt_xdate(rotation=90)
+#plt.subplot(2, 2, 3)
+#plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
+#plt.xlabel("Tidspunkter")
+#plt.ylabel("Lufttrykki hPa")
+#plt.xticks(tick_verdier1)
+#plt.grid()
+#plt.gcf().autofmt_xdate(rotation=90)
 
 plt.show()
