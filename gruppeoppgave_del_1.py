@@ -108,9 +108,9 @@ for i in range(len(tidspunkt1_verdier)):
 #snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
 #print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)
 
-plt.figure(figsize=(12, 10))
+plt.figure(figsize=(16, 9))
 plt.subplot(2, 2, 1)
-plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
+plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
 plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="orange", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
