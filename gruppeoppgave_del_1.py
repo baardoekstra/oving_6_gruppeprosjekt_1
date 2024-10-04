@@ -30,13 +30,25 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
 
     for row2 in reader2:
         try:
-            tidspunkt2_verdier.append(row2[0])
             temperatur2_verdier.append(float(row2[-1].replace(',', '.')))
             trykk_abs_verdier_feil.append(row2[3].replace(',', '.'))
             trykk_bar_verdier_feil.append(row2[2].replace(',', '.'))
         except ValueError:
             trykk_bar_verdier_feil.append(None)
     
+        try:
+            tidspunkt2 = datetime.strptime(row2[0], '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
+            tidspunkt2_str = str(tidspunkt2)
+            tidspunkt2 = datetime.strptime(tidspunkt2_str, '%d.%m.%Y %H:%M')
+            tidspunkt2_verdier.append(tidspunkt2)
+        except ValueError:
+            if row2[0][11:13]=="00":
+                row2[0]=row2[0][:11]+"12"+row2[0][13:]
+            tidspunkt2 = datetime.strptime(row2[0], '%m/%d/%Y %I:%M:%S %p')
+            tidspunkt2_verdier.append(tidspunkt2)
+    
+
+
     trykk_bar_verdier = list()
     trykk_abs_verdier = list()
 
@@ -57,17 +69,17 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             trykk_abs_verdier.append(trykk_abs_verdi_justert_float)
 
 
-    konverterte_tidspunkt2_liste = list()
-    for element in tidspunkt2_verdier:
-        try:
-            konverterte_tidspunkt2 = datetime.strptime(element, '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
-            konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
-        except ValueError:
-            konverterte_tidspunkt2 = datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
-            konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
-    konverterte_tidspunkt2_liste.sort()
+#    konverterte_tidspunkt2_liste = list()
+#    for element in tidspunkt2_verdier:
+#        try:
+#            konverterte_tidspunkt2 = datetime.strptime(element, '%m.%d.%Y %H:%M').strftime('%d.%m.%Y %H:%M')
+#            konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
+#        except ValueError:
+#            konverterte_tidspunkt2 = datetime.strptime(element, '%m/%d/%Y %H:%M:%S %p').strftime('%d.%m.%Y %H:%M')
+#            konverterte_tidspunkt2_liste.append(konverterte_tidspunkt2)
+#    konverterte_tidspunkt2_liste.sort()
 
-samlede_tidspunkt = tidspunkt1_verdier + konverterte_tidspunkt2_liste
+#samlede_tidspunkt = tidspunkt1_verdier + konverterte_tidspunkt2_liste
 #samlede_tidspunkt.sort()
 #print(samlede_tidspunkt, len(samlede_tidspunkt))
 #print(samlede_tidspunkt[0], samlede_tidspunkt[-1])
@@ -78,12 +90,12 @@ samlede_tidspunkt = tidspunkt1_verdier + konverterte_tidspunkt2_liste
 #print(len(tidspunkt1_verdier), len(lufttrykk1_verdier))
 #print(tidspunkt1_verdier, "SKILLE", lufttrykk1_verdier)
 
-tick_antall = 8
-tick_hopp1 = np.linspace(0, len(tidspunkt1_verdier) -1, tick_antall, dtype=int)
-tick_verdier1 = [tidspunkt1_verdier[i] for i in tick_hopp1]
+#tick_antall = 8
+#tick_hopp1 = np.linspace(0, len(tidspunkt1_verdier) -1, tick_antall, dtype=int)
+#tick_verdier1 = [tidspunkt1_verdier[i] for i in tick_hopp1]
 
-tick_hopp2 = np.linspace(0, len(konverterte_tidspunkt2_liste) -1, tick_antall, dtype=int)
-tick_verdier2 = [konverterte_tidspunkt2_liste[i] for i in tick_hopp2]
+#tick_hopp2 = np.linspace(0, len(tidspunkt2_verdier) -1, tick_antall, dtype=int)
+#tick_verdier2 = [tidspunkt2_verdier[i] for i in tick_hopp2]
 
 # Funksjon for å regne gjennomsnitt av temperaturer
 #def snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n):
@@ -102,21 +114,21 @@ for i in range(len(tidspunkt1_verdier)):
 #snitt_temperaturer(tidspunkt1_verdier, temperatur2_verdier, n)
 #print("Andreas sine drittall", (len(tidspunkt1_verdier), len(snitt_temperaturer)
 
-plt.figure()
-print(tidspunkt1_verdier)
-plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
+#plt.figure()
+#print(tidspunkt1_verdier)
+#plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
 #plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
-plt.show()
-print(konverterte_tidspunkt2_liste[1])
+#plt.show()
+#print(konverterte_tidspunkt2_liste[1])
 
 plt.figure(figsize=(16, 9))
 plt.subplot(2, 1, 1)
-plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=4)
-plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="orange", linewidth=2)
-plt.plot(konverterte_tidspunkt2_liste, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=2)
+plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
+plt.plot(tidspunkt1_verdier, snitt_temperaturer, label="Gjennomsnittsverdier", color="orange", linewidth=1)
+plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
-plt.xticks(tick_verdier1)
+#plt.xticks(tick_verdier1)
 plt.gcf().autofmt_xdate(rotation=90)
 plt.grid()
 plt.legend()
@@ -131,12 +143,12 @@ plt.legend()
 #plt.legend()
 
 plt.subplot(2, 1, 2)
-plt.plot(konverterte_tidspunkt2_liste, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=2)
-plt.scatter(konverterte_tidspunkt2_liste, trykk_bar_verdier, label="Trykk Barometer", color= "green")
-plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=2)
+plt.plot(tidspunkt2_verdier, trykk_abs_verdier, label="Trykk Absolutt", color= "yellow", linewidth=1)
+plt.scatter(tidspunkt2_verdier, trykk_bar_verdier, label="Trykk Barometer", color= "green")
+plt.plot(tidspunkt1_verdier, lufttrykk1_verdier, label="Lufttrykk i havnivå", color= "blue", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Trykk i hPa")
-plt.xticks(tick_verdier2)
+#plt.xticks(tick_verdier2)
 plt.grid()
 plt.gcf().autofmt_xdate(rotation=90)
 plt.legend()
