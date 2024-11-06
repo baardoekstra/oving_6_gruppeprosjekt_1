@@ -46,21 +46,20 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 row2[0]=row2[0][:11]+"12"+row2[0][13:]
             tidspunkt2 = datetime.strptime(row2[0], '%m/%d/%Y %I:%M:%S %p')
             tidspunkt2_verdier.append(tidspunkt2)
-"""
-#def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
 
-    j = int(n)
+def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
+    gjennomsnitt_tider = []
+    gjennomsnitt_verdier = []
+    
     for i in range(n, len(temperaturer) - n):
-        gj = sum(temperaturer[n:-n+1])/(2*n+1)
+        gj = sum(temperaturer[i - n:i + n + 1]) / (2 * n + 1)
         gjennomsnitt_verdier.append(gj)
-    return tider[j,-j], gjennomsnitt_verdier
+        gjennomsnitt_tider.append(tider[i])
+    
+    return gjennomsnitt_tider, gjennomsnitt_verdier
 
-gjennomsnitt_tider= []
-gjennomsnitt_verdier = []
-gjennomsnitt_tider, gjennomsnitt_temperaturer = gjennomsnitt_temperaturer(tidspunkt2_verdier, temperatur2_verdier)
-#print(len(gjennomsnitt_tider, len(gjennomsnitt_verdier)))
+gjennomsnitt_tider, gjennomsnitt_verdier = gjennomsnitt_temperaturer(tidspunkt2_verdier, temperatur2_verdier)
 
-"""
 trykk_bar_verdier = list()
 trykk_abs_verdier = list()
 
@@ -82,7 +81,7 @@ for element in trykk_abs_verdier_feil:
 plt.figure(figsize=(16, 9))
 plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
-#plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
+plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
 plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", color= "blue", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer")
