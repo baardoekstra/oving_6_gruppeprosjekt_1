@@ -33,6 +33,9 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
             if len(temperaturfall_liste_met) == 1:
                 temperaturfall2 = float(row[3].replace(',', '.'))
                 temperaturfall_liste_met.append(temperaturfall2)
+        
+forskjell_temp = []
+forskjell_trykk = []
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
@@ -40,6 +43,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     tidspunkt2_verdier = list()
     trykk_bar_verdier_feil = list()
     trykk_abs_verdier_feil = list()
+    
     
 
     header2 = next(reader2)
@@ -76,13 +80,13 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 temperaturfall2_tid = datetime.strptime(row2[0], '%m.%d.%Y %H:%M')
                 temperaturfall_liste.append(temperaturfall2)
                 temperaturfall_tid_liste.append(temperaturfall2_tid)
+''' if row2[0, 2] == ".":
+            if row2[0, :14] == '00':
+                forskjell_temp = float(row2[-1].replace(',','.'))
+                forskjell_trykk = float(row2[-2].replace(',','.'))
+            else:
+                continue'''
 
-
-
-
-                                    
-print(temperaturfall_liste, temperaturfall_tid_liste)
-print(temperaturfall_liste_met)
 
 
 def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
@@ -116,8 +120,14 @@ for element in trykk_abs_verdier_feil:
         trykk_abs_verdi_justert_float = float(trykk_abs_verdi_justert)
         trykk_abs_verdier.append(trykk_abs_verdi_justert_float)
 
+
+
+        
+
+
 differanse_trykk = []
 tidspunkt_differanse = []
+
 for i in range(len(trykk_bar_verdier)):
     if trykk_bar_verdier[i] is not None:
         differanse = trykk_bar_verdier[i] - trykk_abs_verdier[i]
@@ -198,3 +208,10 @@ with open('temperatur_trykk_sauda_sinnes_samme_tidsperiode.csv', mode='r') as fi
         if row[0] == "Navn" or "Data er gyldig per 01.10.2024 (CC BY 4.0), Meteorologisk institutt (MET)":
             continue
         
+
+'''Programmet deres skal finne gjennomsnittlig forskjell mellom temperatur og trykk de to
+dataseriene (Rune Time datasettet og det fra Meteorologisk institutt) samt hvilke
+tidspunkter forskjellen mellom de to seriene er lavest og høyest. Dere trenger bare å
+sammenlikne de linjene i hver fil der tidspunktene er like (for hver dag og time i den ene
+fila, finn tilsvarende dag og time med 0 minutter i den andre fila'''
+
