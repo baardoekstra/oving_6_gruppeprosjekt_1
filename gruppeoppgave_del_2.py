@@ -191,3 +191,10 @@ plt.gcf().autofmt_xdate(rotation=90)
 plt.legend()
 
 plt.show()
+
+with open('temperatur_trykk_sauda_sinnes_samme_tidsperiode.csv', mode='r') as file3:
+    reader3 = csv.reader(file3, delimiter=";")
+    for row in reader3:
+        if row[0] == "Navn" or "Data er gyldig per 01.10.2024 (CC BY 4.0), Meteorologisk institutt (MET)":
+            continue
+        
