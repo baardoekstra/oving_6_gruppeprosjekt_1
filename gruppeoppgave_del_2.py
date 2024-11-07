@@ -207,7 +207,7 @@ plt.figure(figsize=(16, 9))
 
 plt.plot(tid_ss, temp_si, label="Temperaturer, Sirdal", color="red", linewidth=1)
 plt.plot(tid_ss, temp_sa, label="Temperaturer, Sauda", color="blue", linewidth=1)
-plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier, UiS", color="orange", linewidth=1)
+plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittstemperaturer, UiS", color="orange", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer / Temperaturfall")
 plt.gcf().autofmt_xdate(rotation=90)
