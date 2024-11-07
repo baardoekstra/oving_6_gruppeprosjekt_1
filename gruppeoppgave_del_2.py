@@ -40,6 +40,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     tidspunkt2_verdier = list()
     trykk_bar_verdier_feil = list()
     trykk_abs_verdier_feil = list()
+    
 
     header2 = next(reader2)
     tidspunkt2 = (header2[0])
@@ -76,6 +77,10 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 temperaturfall_liste.append(temperaturfall2)
                 temperaturfall_tid_liste.append(temperaturfall2_tid)
 
+
+
+
+                                    
 print(temperaturfall_liste, temperaturfall_tid_liste)
 print(temperaturfall_liste_met)
 
@@ -111,33 +116,36 @@ for element in trykk_abs_verdier_feil:
         trykk_abs_verdi_justert_float = float(trykk_abs_verdi_justert)
         trykk_abs_verdier.append(trykk_abs_verdi_justert_float)
 
-# Calculate temperature drops for MET data (file1)
-temperaturfall1 = [temperatur1_verdier[i] - temperatur1_verdier[i + 1] for i in range(len(temperatur1_verdier) - 1)]
+differanse_trykk = []
+tidspunkt_differanse = []
+for i in range(len(trykk_bar_verdier)):
+    if trykk_bar_verdier[i] is not None:
+        differanse = trykk_bar_verdier[i] - trykk_abs_verdier[i]
+        differanse_trykk.append(differanse)
+        tidspunkt_differanse.append(tidspunkt2_verdier[i])
 
-# Calculate temperature drops for other data (file2)
-temperaturfall2 = [temperatur2_verdier[i] - temperatur2_verdier[i + 1] for i in range(len(temperatur2_verdier) - 1)]
+def glatt_differanse(trykk_bar_verdier, n=10):
+    glatt_verdier = []
+    for i in range(n, len(trykk_bar_verdier) - n):
+        gjennomsnitt = np.mean(trykk_bar_verdier[i - n:i + n + 1])
+        glatt_verdier.append(gjennomsnitt)
+    return glatt_verdier, tidspunkt_differanse[n:len(trykk_bar_verdier) - n]
+glatt_trykk_differanse, glatt_tidspunkt_differanse = glatt_differanse(differanse_trykk)
 
-
-
-# Update the existing plot
 plt.figure(figsize=(16, 9))
 
-# First subplot: Temperature
 plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
 plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", color="blue", linewidth=1)
 plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
-#plt.plot(tidspunkt1_verdier[:-1], temperaturfall1, label="Temperaturfall MET", color="purple", linewidth=1)
-#plt.plot(tidspunkt2_verdier[:-1], temperaturfall2, label="Temperaturfall Dataset 2", color="teal", linewidth=1)
 plt.plot(temperaturfall_tid_liste, temperaturfall_liste, label="Temperaturfall 11. - 12. Juni 2021", color="purple", linewidth=1)
-plt.plot(temperaturfall_tid_liste, temperaturfall_liste_met, label="Temperaturfall 11. - 12. Juni MET", color="purple", linewidth=1)
+plt.plot(temperaturfall_tid_liste, temperaturfall_liste_met, label="Temperaturfall 11. - 12. Juni MET", color="red", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer / Temperaturfall")
 plt.gcf().autofmt_xdate(rotation=90)
 plt.grid()
 plt.legend()
 
-# Second subplot: Pressure
 plt.subplot(2, 1, 2)
 plt.plot(tidspunkt2_verdier, trykk_abs_verdier, label="Trykk Absolutt", color="yellow", linewidth=1)
 plt.scatter(tidspunkt2_verdier, trykk_bar_verdier, label="Trykk Barometer", color="green")
@@ -150,3 +158,36 @@ plt.legend()
 
 plt.show()
 
+
+# Kombiner temperaturverdiene fra begge filer
+temperatur_alle_verdier = temperatur1_verdier + temperatur2_verdier
+
+# Definer bin-størrelsen til 1 grad
+bin_size = 1
+min_temp = int(min(temperatur_alle_verdier))
+max_temp = int(max(temperatur_alle_verdier))
+bins = np.arange(min_temp, max_temp + bin_size, bin_size)
+
+# Lag histogrammet
+plt.figure(figsize=(10, 6))
+plt.hist(temperatur1_verdier, bins=bins, alpha=0.5, label="Temperatur MET (Fil 1)", color="red")
+plt.hist(temperatur2_verdier, bins=bins, alpha=0.5, label="Temperatur Dataset 2", color="blue")
+
+# Tilpass labels og vis legend
+plt.xlabel("Temperatur (°C)")
+plt.ylabel("Frekvens")
+plt.title("Histogram over temperaturer fra begge filer")
+plt.legend()
+plt.grid(axis='y', alpha=0.75)
+
+# Vis histogrammet
+plt.show()
+
+plt.plot(glatt_tidspunkt_differanse, glatt_trykk_differanse, label ="Differanse absolutt/barometrisk trykk", color="orange", linewidth=2)
+plt.xlabel("Tidspunkter")
+plt.ylabel("Differanse i hPA")
+plt.grid()
+plt.gcf().autofmt_xdate(rotation=90)
+plt.legend()
+
+plt.show()
