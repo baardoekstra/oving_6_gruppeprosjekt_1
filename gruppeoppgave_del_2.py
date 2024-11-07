@@ -12,6 +12,7 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
 
     header = next(reader1)
     tidspunkt1 = (header[2])
+<<<<<<< Updated upstream
     temperaturfall1 = 0
     temperaturfall1_tid = 0
     temperaturfall2 = 0
@@ -19,12 +20,16 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
     temperaturfall_liste = []
     temperaturfall_tid_liste = []
     temperaturfall_liste_met = []
+=======
+    
+>>>>>>> Stashed changes
 
     for row in reader1:
         tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
         temperatur1_verdier.append(float(row[3].replace(',', '.')))
         lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
 
+<<<<<<< Updated upstream
         if row[2] == "11.06.2021 17:00":
                 if len(temperaturfall_liste_met) == 0:
                     temperaturfall1 = float(row[3].replace(',', '.'))
@@ -36,6 +41,9 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
         
 forskjell_temp = []
 forskjell_trykk = []
+=======
+    
+>>>>>>> Stashed changes
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
@@ -69,6 +77,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             tidspunkt2 = datetime.strptime(row2[0], '%m/%d/%Y %I:%M:%S %p')
             tidspunkt2_verdier.append(tidspunkt2)
         if row2[0] == "06.11.2021 17:31":
+<<<<<<< Updated upstream
             if len(temperaturfall_liste) == 0:
                 temperaturfall1 = float(row2[-1].replace(',', '.'))
                 temperaturfall1_tid = datetime.strptime(row2[0], '%m.%d.%Y %H:%M')
@@ -88,6 +97,29 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 continue'''
 
 
+=======
+            temperaturfall1 = row2[-1]
+            temperaturfall1_tid = row2[0]
+            temperaturfall1_tid = datetime.strptime(temperaturfall1_tid, '%m.%d.%Y %H:%M')
+            temperaturfall_liste.append(temperaturfall1)
+            temperaturfall_tid_liste.append(temperaturfall1_tid)
+            if len(temperaturfall1) != 0:
+                break
+            
+        if row2[0] == "06.12.2021 03:05":
+            temperaturfall2 = row2[-1]
+            temperaturfall2_tid = row2[0]
+            temperaturfall2_tid = datetime.strptime(temperaturfall2_tid, '%m.%d.%Y %H:%M')
+            temperaturfall_liste.append(temperaturfall2)
+            temperaturfall_tid_liste.append(temperaturfall2_tid)
+            if len(temperaturfall2) != 0:
+                break
+
+print(temperaturfall_liste, temperaturfall_tid_liste)
+#print(temperaturfall2, temperaturfall2_tid)
+"""
+
+>>>>>>> Stashed changes
 
 def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
     gjennomsnitt_tider = []
@@ -122,6 +154,7 @@ for element in trykk_abs_verdier_feil:
 
 
 
+<<<<<<< Updated upstream
         
 
 
@@ -142,14 +175,26 @@ def glatt_differanse(trykk_bar_verdier, n=10):
     return glatt_verdier, tidspunkt_differanse[n:len(trykk_bar_verdier) - n]
 glatt_trykk_differanse, glatt_tidspunkt_differanse = glatt_differanse(differanse_trykk)
 
+=======
+# Update the existing plot
+#Temperaturfall
+
+
+>>>>>>> Stashed changes
 plt.figure(figsize=(16, 9))
 
 plt.subplot(2, 1, 1)
 plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
 plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", color="blue", linewidth=1)
 plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
+<<<<<<< Updated upstream
 plt.plot(temperaturfall_tid_liste, temperaturfall_liste, label="Temperaturfall 11. - 12. Juni 2021", color="purple", linewidth=1)
 plt.plot(temperaturfall_tid_liste, temperaturfall_liste_met, label="Temperaturfall 11. - 12. Juni MET", color="red", linewidth=1)
+=======
+plt.plot(tidspunkt1_verdier[:-1], temperaturfall1, label="Temperaturfall MET", color="purple", linewidth=1)
+plt.plot(tidspunkt2_verdier[:-1], temperaturfall2, label="Temperaturfall Dataset 2", color="teal", linewidth=1)
+plt.plot(temperaturfall_liste, temperaturfall_tid_liste, label="Temperaturfall faen", color="purple", linewidth=1)
+>>>>>>> Stashed changes
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer / Temperaturfall")
 plt.gcf().autofmt_xdate(rotation=90)
@@ -168,6 +213,7 @@ plt.legend()
 
 plt.show()
 
+<<<<<<< Updated upstream
 
 # Kombiner temperaturverdiene fra begge filer
 temperatur_alle_verdier = temperatur1_verdier + temperatur2_verdier
@@ -215,3 +261,6 @@ tidspunkter forskjellen mellom de to seriene er lavest og høyest. Dere trenger 
 sammenlikne de linjene i hver fil der tidspunktene er like (for hver dag og time i den ene
 fila, finn tilsvarende dag og time med 0 minutter i den andre fila'''
 
+=======
+"""
+>>>>>>> Stashed changes
