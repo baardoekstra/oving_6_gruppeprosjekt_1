@@ -12,11 +12,27 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
 
     header = next(reader1)
     tidspunkt1 = (header[2])
+    temperaturfall1 = 0
+    temperaturfall1_tid = 0
+    temperaturfall2 = 0
+    temperaturfall2_tid = 0
+    temperaturfall_liste = []
+    temperaturfall_tid_liste = []
+    temperaturfall_liste_met = []
 
     for row in reader1:
         tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
         temperatur1_verdier.append(float(row[3].replace(',', '.')))
         lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
+
+        if row[2] == "11.06.2021 17:00":
+                if len(temperaturfall_liste_met) == 0:
+                    temperaturfall1 = float(row[3].replace(',', '.'))
+                    temperaturfall_liste_met.append(temperaturfall1)
+        if row[2] == "12.06.2021 03:00":
+            if len(temperaturfall_liste_met) == 1:
+                temperaturfall2 = float(row[3].replace(',', '.'))
+                temperaturfall_liste_met.append(temperaturfall2)
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
@@ -27,12 +43,7 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
 
     header2 = next(reader2)
     tidspunkt2 = (header2[0])
-    temperaturfall1 = 0
-    temperaturfall1_tid = 0
-    temperaturfall2 = 0
-    temperaturfall2_tid = 0
-    temperaturfall_liste = []
-    temperaturfall_tid_liste = []
+
 
     for row2 in reader2:
         try:
@@ -53,23 +64,22 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
             tidspunkt2 = datetime.strptime(row2[0], '%m/%d/%Y %I:%M:%S %p')
             tidspunkt2_verdier.append(tidspunkt2)
         if row2[0] == "06.11.2021 17:31":
-            temperaturfall1 = row2[-1]
-            temperaturfall1_tid = row2[0]
-            temperaturfall1_tid = datetime.strptime(temperaturfall1_tid, '%m.%d.%Y %H:%M')
-            temperaturfall_liste.append(temperaturfall1)
-            temperaturfall_tid_liste.append(temperaturfall1_tid)
-            
+            if len(temperaturfall_liste) == 0:
+                temperaturfall1 = float(row2[-1].replace(',', '.'))
+                temperaturfall1_tid = datetime.strptime(row2[0], '%m.%d.%Y %H:%M')
+                temperaturfall_liste.append(temperaturfall1)
+                temperaturfall_tid_liste.append(temperaturfall1_tid)
         if row2[0] == "06.12.2021 03:05":
-            temperaturfall2 = row2[-1]
-            temperaturfall2_tid = row2[0]
-            temperaturfall2_tid = datetime.strptime(temperaturfall2_tid, '%m.%d.%Y %H:%M')
-            temperaturfall_liste.append(temperaturfall2)
-            temperaturfall_tid_liste.append(temperaturfall2_tid)
+            if len(temperaturfall_liste) == 1:
+                temperaturfall2 = float(row2[-1].replace(',', '.'))
+                temperaturfall2_tid = datetime.strptime(row2[0], '%m.%d.%Y %H:%M')
+                temperaturfall_liste.append(temperaturfall2)
+                temperaturfall_tid_liste.append(temperaturfall2_tid)
 
 print(temperaturfall_liste, temperaturfall_tid_liste)
-#print(temperaturfall2, temperaturfall2_tid)
+print(temperaturfall_liste_met)
 
-"""
+
 def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
     gjennomsnitt_tider = []
     gjennomsnitt_verdier = []
@@ -107,6 +117,8 @@ temperaturfall1 = [temperatur1_verdier[i] - temperatur1_verdier[i + 1] for i in 
 # Calculate temperature drops for other data (file2)
 temperaturfall2 = [temperatur2_verdier[i] - temperatur2_verdier[i + 1] for i in range(len(temperatur2_verdier) - 1)]
 
+
+
 # Update the existing plot
 plt.figure(figsize=(16, 9))
 
@@ -117,7 +129,8 @@ plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", 
 plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
 #plt.plot(tidspunkt1_verdier[:-1], temperaturfall1, label="Temperaturfall MET", color="purple", linewidth=1)
 #plt.plot(tidspunkt2_verdier[:-1], temperaturfall2, label="Temperaturfall Dataset 2", color="teal", linewidth=1)
-plt.plot(temperaturfall_liste, temperaturfall_tid_liste, label="Temperaturfall faen", color="purple", linewidth=1)
+plt.plot(temperaturfall_tid_liste, temperaturfall_liste, label="Temperaturfall 11. - 12. Juni 2021", color="purple", linewidth=1)
+plt.plot(temperaturfall_tid_liste, temperaturfall_liste_met, label="Temperaturfall 11. - 12. Juni MET", color="purple", linewidth=1)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Temperaturer / Temperaturfall")
 plt.gcf().autofmt_xdate(rotation=90)
@@ -137,5 +150,3 @@ plt.legend()
 
 plt.show()
 
-
-"""
