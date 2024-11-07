@@ -33,6 +33,7 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
             if len(temperaturfall_liste_met) == 1:
                 temperaturfall2 = float(row[3].replace(',', '.'))
                 temperaturfall_liste_met.append(temperaturfall2)
+        
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
