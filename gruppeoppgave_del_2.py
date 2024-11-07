@@ -77,14 +77,6 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 temperaturfall_liste.append(temperaturfall2)
                 temperaturfall_tid_liste.append(temperaturfall2_tid)
 
-
-
-
-                                    
-print(temperaturfall_liste, temperaturfall_tid_liste)
-print(temperaturfall_liste_met)
-
-
 def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
     gjennomsnitt_tider = []
     gjennomsnitt_verdier = []
@@ -135,7 +127,7 @@ glatt_trykk_differanse, glatt_tidspunkt_differanse = glatt_differanse(differanse
 plt.figure(figsize=(16, 9))
 
 plt.subplot(2, 1, 1)
-plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=2)
+plt.plot(tidspunkt1_verdier, temperatur1_verdier, label="Lufttemperatur MET", color="red", linewidth=1)
 plt.plot(tidspunkt2_verdier, temperatur2_verdier, label="Temperatur i celsius", color="blue", linewidth=1)
 plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier", color="orange", linewidth=1)
 plt.plot(temperaturfall_tid_liste, temperaturfall_liste, label="Temperaturfall 11. - 12. Juni 2021", color="purple", linewidth=1)
@@ -169,20 +161,18 @@ max_temp = int(max(temperatur_alle_verdier))
 bins = np.arange(min_temp, max_temp + bin_size, bin_size)
 
 # Lag histogrammet
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(16, 9))     # Mangle verdier på x-akse
+
+plt.subplot(2, 1, 1)
 plt.hist(temperatur1_verdier, bins=bins, alpha=0.5, label="Temperatur MET (Fil 1)", color="red")
 plt.hist(temperatur2_verdier, bins=bins, alpha=0.5, label="Temperatur Dataset 2", color="blue")
-
-# Tilpass labels og vis legend
 plt.xlabel("Temperatur (°C)")
 plt.ylabel("Frekvens")
 plt.title("Histogram over temperaturer fra begge filer")
 plt.legend()
 plt.grid(axis='y', alpha=0.75)
 
-# Vis histogrammet
-plt.show()
-
+plt.subplot(2, 1, 2)
 plt.plot(glatt_tidspunkt_differanse, glatt_trykk_differanse, label ="Differanse absolutt/barometrisk trykk", color="orange", linewidth=2)
 plt.xlabel("Tidspunkter")
 plt.ylabel("Differanse i hPA")
@@ -192,9 +182,37 @@ plt.legend()
 
 plt.show()
 
+tid_ss = []
+temp_si =[]
+l_trykk_si = []
+temp_sa =[]
+l_trykk_sa = []
+
 with open('temperatur_trykk_sauda_sinnes_samme_tidsperiode.csv', mode='r') as file3:
     reader3 = csv.reader(file3, delimiter=";")
     for row in reader3:
-        if row[0] == "Navn" or "Data er gyldig per 01.10.2024 (CC BY 4.0), Meteorologisk institutt (MET)":
-            continue
-        
+        if row[0] in ["Navn", "Data er gyldig per 01.10.2024 (CC BY 4.0), Meteorologisk institutt (MET)"]:
+            continue        # WTF
+        if row[0] == "Sirdal - Sinnes":
+            tid_ss.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
+            temp_si.append(float(row[-2].replace(',', '.')))
+            l_trykk_si.append(float(row[-1].replace(',', '.')))
+        if row[0] == 'Sauda':
+            temp_sa.append(float(row[-2].replace(',', '.')))
+            l_trykk_sa.append(float(row[-1].replace(',', '.')))
+
+print(tid_ss)
+
+plt.figure(figsize=(16, 9))
+
+plt.plot(tid_ss, temp_si, label="Temperaturer, Sirdal", color="red", linewidth=1)
+plt.plot(tid_ss, temp_sa, label="Temperaturer, Sauda", color="blue", linewidth=1)
+plt.plot(gjennomsnitt_tider, gjennomsnitt_verdier, label="Gjennomsnittsverdier, UiS", color="orange", linewidth=1)
+plt.xlabel("Tidspunkter")
+plt.ylabel("Temperaturer / Temperaturfall")
+plt.gcf().autofmt_xdate(rotation=90)
+plt.grid()
+plt.legend()
+
+plt.show()
+
