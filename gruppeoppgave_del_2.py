@@ -16,14 +16,21 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
     temperaturfall1_tid = 0
     temperaturfall2 = 0
     temperaturfall2_tid = 0
-    temperaturfall_liste = []
-    temperaturfall_tid_liste = []
-    temperaturfall_liste_met = []
+    temperaturfall_liste = list()
+    temperaturfall_tid_liste = list()
+    temperaturfall_liste_met = list()
+    temp_hele_timer1 = list()
+    trykk_hele_timer1 = list()
+    trykk_hele_timer_liste1 = list()
+    temp_hele_timer_liste1 = list()
+
 
     for row in reader1:
         tidspunkt1_verdier.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
         temperatur1_verdier.append(float(row[3].replace(',', '.')))
         lufttrykk1_verdier.append(float(row[4].replace(',', '.')))
+        temp_hele_timer1.append(float(row[-2].replace(',', '.')))
+        trykk_hele_timer1.append(float(row[-1].replace(',', '.')))
 
         if row[2] == "11.06.2021 17:00":
                 if len(temperaturfall_liste_met) == 0:
@@ -33,6 +40,15 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
             if len(temperaturfall_liste_met) == 1:
                 temperaturfall2 = float(row[3].replace(',', '.'))
                 temperaturfall_liste_met.append(temperaturfall2)
+    hopplinje = 0
+    for row in reader1:
+        hopplinje += 1
+        if hopplinje > 15 and hopplinje < 71:
+            temp_hele_timer_liste1 = float(row[-2].replace(',','.'))
+            temp_hele_timer1.append(temp_hele_timer_liste1)
+            trykk_hele_timer_liste1 = float(row[-1].replace(',','.'))
+            trykk_hele_timer1.append(trykk_hele_timer_liste1)
+       # print(trykk_hele_timer1, temp_hele_timer1)
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
@@ -40,6 +56,10 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     tidspunkt2_verdier = list()
     trykk_bar_verdier_feil = list()
     trykk_abs_verdier_feil = list()
+    temp_hele_timer = list()
+    trykk_hele_timer = list()
+    temp_hele_timer_liste = list()
+    trykk_hele_timer_liste = list()
     
 
     header2 = next(reader2)
@@ -75,7 +95,17 @@ with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
                 temperaturfall2 = float(row2[-1].replace(',', '.'))
                 temperaturfall2_tid = datetime.strptime(row2[0], '%m.%d.%Y %H:%M')
                 temperaturfall_liste.append(temperaturfall2)
-                temperaturfall_tid_liste.append(temperaturfall2_tid)
+                temperaturfall_tid_liste.append(temperaturfall2_tid)    
+        if row2[0][14:16] == "00":
+            temp_hele_timer_liste = float(row2[-1].replace(',','.'))
+            temp_hele_timer.append(temp_hele_timer_liste)
+            trykk_hele_timer_liste = float(row2[-2].replace(',','.'))
+            trykk_hele_timer.append(trykk_hele_timer_liste)
+            next(reader2)
+            next(reader2)
+            next(reader2)
+            next(reader2)
+            next(reader2)
 
 def gjennomsnitt_temperaturer(tider, temperaturer, n=30):
     gjennomsnitt_tider = []
@@ -192,7 +222,7 @@ with open('temperatur_trykk_sauda_sinnes_samme_tidsperiode.csv', mode='r') as fi
     reader3 = csv.reader(file3, delimiter=";")
     for row in reader3:
         if row[0] in ["Navn", "Data er gyldig per 01.10.2024 (CC BY 4.0), Meteorologisk institutt (MET)"]:
-            continue        # WTF
+            continue       
         if row[0] == "Sirdal - Sinnes":
             tid_ss.append(datetime.strptime(row[2], '%d.%m.%Y %H:%M'))
             temp_si.append(float(row[-2].replace(',', '.')))
@@ -201,7 +231,6 @@ with open('temperatur_trykk_sauda_sinnes_samme_tidsperiode.csv', mode='r') as fi
             temp_sa.append(float(row[-2].replace(',', '.')))
             l_trykk_sa.append(float(row[-1].replace(',', '.')))
 
-print(tid_ss)
 
 plt.figure(figsize=(16, 9))
 
