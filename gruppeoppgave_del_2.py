@@ -40,6 +40,7 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
             if len(temperaturfall_liste_met) == 1:
                 temperaturfall2 = float(row[3].replace(',', '.'))
                 temperaturfall_liste_met.append(temperaturfall2)
+<<<<<<< HEAD
     hopplinje = 0
     for row in reader1:
         hopplinje += 1
@@ -49,6 +50,9 @@ with open('temperatur_trykk_met_samme_rune_time_datasett.csv', mode='r') as file
             trykk_hele_timer_liste1 = float(row[-1].replace(',','.'))
             trykk_hele_timer1.append(trykk_hele_timer_liste1)
        # print(trykk_hele_timer1, temp_hele_timer1)
+=======
+        
+>>>>>>> d53edb53929aa545a63d5e3722d4f56e602264c8
 
 with open('trykk_og_temperaturlogg_rune_time.csv', mode='r') as file2:
     reader2 = csv.reader(file2, delimiter=";")
